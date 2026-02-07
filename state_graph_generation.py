@@ -41,7 +41,7 @@ class StateGraphGenerator:
         """
         return new_link_position in {new_shadow_statue_position, new_mirror_statue_position}
     
-    def get_shadow_statue_new_position(self, statue_shadow_position: int, link_movement_direction: str) -> int:
+    def get_shadow_statue_new_position(self, statue_shadow_position: int, link_movement_direction: str, old_mirror_statue_position) -> int:
         """Calculate the new position of the shadow statue based on Wolf Link's movement direction.
 
         Args:
@@ -57,9 +57,12 @@ class StateGraphGenerator:
             ),
             statue_shadow_position # If no valid move for the shadow statue, it stays in place
         )
+        if shadow_statue_new_position == old_mirror_statue_position:
+            # If the shadow statue tries to move to the tile where the mirror statue is, it cannot move and stays in place
+            shadow_statue_new_position = statue_shadow_position
         return shadow_statue_new_position
     
-    def get_mirror_statue_new_position(self, statue_mirror_position: int, link_movement_direction: str) -> int:
+    def get_mirror_statue_new_position(self, statue_mirror_position: int, link_movement_direction: str, old_shadow_statue_position: int) -> int:
         """Calculate the new position of the mirror statue based on Wolf Link's movement direction.
 
         Args:
@@ -76,6 +79,9 @@ class StateGraphGenerator:
             ), 
             statue_mirror_position
         ) # If no valid move for the mirror statue, it stays in place
+        if mirror_statue_new_position == old_shadow_statue_position:
+            # If the mirror statue tries to move to the tile where the shadow statue is, it cannot move and stays in place
+            mirror_statue_new_position = statue_mirror_position
         return mirror_statue_new_position   
 
     def get_next_states(self, current_state: tuple[int, int, int]) -> list[tuple[int, int, int]]:
@@ -91,10 +97,13 @@ class StateGraphGenerator:
         next_states = []
         for neighbor in self.get_available_tiles(wolf_link_position, shadow_statue_position, mirror_statue_position):
             movement_direction = self.graph.get_edge_data(wolf_link_position, neighbor).get('dir')
-            new_shadow_statue_position = self.get_shadow_statue_new_position(shadow_statue_position, movement_direction)
-            new_mirror_statue_position = self.get_mirror_statue_new_position(mirror_statue_position, movement_direction)
+            new_shadow_statue_position = self.get_shadow_statue_new_position(shadow_statue_position, movement_direction, mirror_statue_position)
+            new_mirror_statue_position = self.get_mirror_statue_new_position(mirror_statue_position, movement_direction, shadow_statue_position)
             if not self.will_link_move_to_invalid_position(neighbor, new_shadow_statue_position, new_mirror_statue_position):
-                next_states.append((neighbor, new_shadow_statue_position, new_mirror_statue_position))
+                if new_shadow_statue_position != new_mirror_statue_position:
+                    # If both statues end up on the same tile, they cannot occupy the same space and thus this state is invalid. 
+                    # We add otherwise.
+                    next_states.append((neighbor, new_shadow_statue_position, new_mirror_statue_position))
         return next_states
 
     def brute_force_state_graph_generation(self,
