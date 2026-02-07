@@ -1,6 +1,6 @@
 # Motivation
 
-I was playing The Legend of Zelda, Twilight Princess when I finally reached the Sacred Grove. I was stunned by its visuals: I love old temples forgotten in forests. Some scenes further, and I am facing a Klotski-like puzzle. If you don't know what I am talking about, take a glance at these [TopicTech Gaming's "How To Solve The Sacred Grove Statue Puzzle" Youtube Shorts](https://youtu.be/eAhR_9qhY1M?si=L0XwBUh5HOgOjiOh). Basically we need to move a pair of statues to their 'original' tiles given that one of them mirror our movement (i.e., we go up, it goes down) and the other follows us exactly (like a shadow). Below we have an image of the puzzle at its starting place:
+I was playing The Legend of Zelda, Twilight Princess when I finally reached the Sacred Grove. I was stunned by its visuals: I love old temples forgotten in forests. Some scenes further, and I am facing a Klotski-like puzzle. If you don't know what I am talking about, take a glance at [TopicTech Gaming's "How To Solve The Sacred Grove Statue Puzzle" Youtube Short](https://youtu.be/eAhR_9qhY1M?si=L0XwBUh5HOgOjiOh). Basically we need to move a pair of statues to their 'original' tiles given that one of them mirror our movement (i.e., we go up, it goes down) and the other follows us exactly (like a shadow). Below we have an image of the puzzle at its starting place:
 
 ![puzzle](./figs/puzzle.png)
 
@@ -43,3 +43,4 @@ The graph generation is implemented at an [homonymous python file](./state_graph
 - I'd love to visualize the graph using swaptube. Gotta do it on the future;
 - The absolute upper limit for graph states are 7980 elements. The generation found something around the half of it: 3398 nodes. We've got 8950 edges;
 - There are 24 'solution states': half of it place the mirror statue on the tile number 5, and the other placing it on 15.
+- The best walk has exactly 12 steps between the starting state and the last (goal) one
