@@ -1,6 +1,7 @@
 from puzzle_graph import TILE_GRAPH
 from moving_characters import WolfLink, Statue
 from search import Search
+from state_graph_generation import StateGraphGenerator
 
 def print_trajectory(wolf_link: WolfLink, statue_mirror: Statue, statue_shadow: Statue):
     print("Trajectory:")
@@ -11,12 +12,23 @@ def main():
     mirror_statue = Statue(position=9, pattern='mirror')
     wolf_link = WolfLink(position=11)
     shadow_statue = Statue(position=13, pattern='shadow')
-    search = Search(graph=TILE_GRAPH, wolf_link=wolf_link, statue_mirror=mirror_statue, statue_shadow=shadow_statue)
+    search = Search(
+        graph=TILE_GRAPH, 
+        wolf_link=wolf_link, 
+        statue_mirror=mirror_statue, 
+        statue_shadow=shadow_statue,
+        maximum_steps=200)
     search.random_walk_search()
     print_trajectory(wolf_link, mirror_statue, shadow_statue)
 
+def graph_generation():
+    state_graph_generator = StateGraphGenerator(graph=TILE_GRAPH)
+    state_graph = state_graph_generator.brute_force_state_graph_generation()
+    print(f"Generated state graph with {len(state_graph)} states.")
+
 if __name__ == "__main__":
-    main()
+    # main()
+    graph_generation()
 
 # def main():
 #     # Example usage: find all nodes reachable from node 11 and their metadata
