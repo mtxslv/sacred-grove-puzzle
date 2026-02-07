@@ -4,10 +4,6 @@ I was playing The Legend of Zelda, Twilight Princess when I finally reached the 
 
 ![puzzle](./figs/puzzle.png)
 
-Notice the character's original position is such that:
-- Wolf Link is on the 11-th node
-- Shadow Statue is on the 13-th node
-- Mirror Statue is on the 9-th node
 
 And that the goal is to place the statues at nodes 5 and 15.
 
@@ -16,6 +12,11 @@ And that the goal is to place the statues at nodes 5 and 15.
 Given the puzzle's structure I noticed at once the movements can be modeled like a graph, so I can give the 'search' a structure: searching in a graph is a known-problem! If each tile is a node, the movements can be seen as directed edges. Moreover, I can control the mirror statue movement by assigning labels to the movements (North, South, East, and West) and flipping it before I move the guardian. The shadow statue follows the original, non-flipped label. This led to [an encoded graph structure](./puzzle_graph.py) based on the following Figure:
  
 ![tile-graph](./figs/tile-graph.png)
+
+Notice the character's original position is such that:
+- Wolf Link is on the 11-th node
+- Shadow Statue is on the 13-th node
+- Mirror Statue is on the 9-th node
 
 I coded the rules for each statue and link movement on the [search.py](./search.py) file, while [moving_character.py](./moving_character.py) define the place update logic. As far as I understood, these are few and simple:
 - Wolk Link can only move to empty tiles;
