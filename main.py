@@ -2,6 +2,9 @@ from puzzle_graph import TILE_GRAPH
 from moving_characters import WolfLink, Statue
 from search import Search
 from state_graph_generation import StateGraphGenerator
+from pathlib import Path
+import networkx as nx
+dir_to_save = Path(__file__).parent
 
 def print_trajectory(wolf_link: WolfLink, statue_mirror: Statue, statue_shadow: Statue):
     print("Trajectory:")
@@ -21,10 +24,25 @@ def main():
     search.random_walk_search()
     print_trajectory(wolf_link, mirror_statue, shadow_statue)
 
+def save_state_graph(graph):
+    ## 4. Save the graph to a GraphML file
+    file_name = dir_to_save / 'state-graph.graphml'
+    try:
+        nx.write_graphml(
+            graph, 
+            file_name,
+            encoding='utf-8',
+            infer_numeric_types=True
+        )
+        print(f"Successfully saved the graph to {file_name}")
+    except Exception as e:
+        print(f"An error occurred while saving the file: {e}")    
+
 def graph_generation():
     state_graph_generator = StateGraphGenerator(graph=TILE_GRAPH)
     state_graph = state_graph_generator.brute_force_state_graph_generation()
     print(f"Generated state graph with {len(state_graph)} states.")
+    save_state_graph(state_graph)
 
 if __name__ == "__main__":
     # main()

@@ -639,7 +639,6 @@ terraform.plan
 data/data.jsonl
 data/*.zip
 *.parquet
-*.graphml
 *.txt
 *.pb
 *.csv
