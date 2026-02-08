@@ -4,9 +4,6 @@ I was playing The Legend of Zelda, Twilight Princess when I finally reached the 
 
 ![puzzle](./figs/puzzle.png)
 
-
-And that the goal is to place the statues at nodes 5 and 15.
-
 # First Version: Random Walk
 
 Given the puzzle's structure I noticed at once the movements can be modeled like a graph, so I can give the 'search' a structure: searching in a graph is a known-problem! If each tile is a node, the movements can be seen as directed edges. Moreover, I can control the mirror statue movement by assigning labels to the movements (North, South, East, and West) and flipping it before I move the guardian. The shadow statue follows the original, non-flipped label. This led to [an encoded graph structure](./puzzle_graph.py) based on the following Figure:
@@ -17,6 +14,7 @@ Notice the character's original position is such that:
 - Wolf Link is on the 11-th node
 - Shadow Statue is on the 13-th node
 - Mirror Statue is on the 9-th node
+And that the goal is to place the statues at nodes 5 and 15.
 
 I coded the rules for each statue and link movement on the [search.py](./search.py) file, while [moving_character.py](./moving_character.py) define the place update logic. As far as I understood, these are few and simple:
 - Wolk Link can only move to empty tiles;
@@ -41,7 +39,7 @@ Ok, moving to the State Graph generation, we've got a rather simple task to code
 The graph generation is implemented at an [homonymous python file](./state_graph_generation.py). It is used in the [main.py](./main.py) to generate the [state-graph.graphml](./state-graph.graphml). With the graph created, all we need to do is [find a way to place the statues in the right position](./find_solutions.py).
 
 ## Last thoughts on the State Graph:
-- I'd love to visualize the graph using swaptube. Gotta do it on the future;
+- I'd love to visualize the graph using swaptube. Gotta do it in the future;
 - The absolute upper limit for graph states are 7980 elements. The generation found something around the half of it: 3398 nodes. We've got 8950 edges;
-- There are 24 'solution states': half of it place the mirror statue on the tile number 5, and the other placing it on 15.
+- There are 24 'solution states': half of it place the mirror statue on the tile number 5, and the other place it on 15.
 - The best walk has exactly 12 steps between the starting state and the last (goal) one
